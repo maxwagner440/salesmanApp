@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+	<meta charset="UTF-8">
+	<title>Customer Management Page</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+	<script type="text/javascript" src="/javascripts/script1.js"></script>
+
+
+</head>
+
+<body>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<div class="topnav" id="myTopnav">
+		<a href="/" class="active">Home</a>
+		<a href="/custManage">Customer Management</a>
+		<a href="#contact">Contact</a>
+		<a href="#about">About</a>
+		<a href="javascript:void(0);" class="icon" onclick="myFunction()">
+			<i class="fa fa-bars"></i>
+		</a>
+	</div>
+
+
+	<div class="container">
+		<div class="jumbotron">
+			<h1>Customer Management</h1>
+
+		</div>
+	</div>
+
+
+
+	<div ng-app="myApp" ng-controller="myCtrl" class="background">
+		<h2 class="header2">Customer Managment Center</h2>
+		<div id="flex-btn">
+		<div class="button-segment">
+			<div id="btn-outer-one">
+			<button id="btn-main-one">Create Customer</button>
+		</div>
+		<div id="btn-outer-two">
+			<button id="btn-main-two">View Customers</button>
+		</div>
+		</div>
+	</div>
+		<div class="flexer">
+
+			<div class="flex-container-one">
+
+				<h2>Customer Input:</h2>
+
+				<form action="/custManageUser" method="POST" name="userOne">
+					<div class="col">
+						<div class="text-between">
+							Name:
+							<br>
+							<input type="text" ng-model="custName" ng-change="change()" name="custName">
+							<br>
+						</div>
+						<div class="text-between">
+							Phone Number (only digits):
+							<br>
+							<input type="tel" ng-model="custNumber" ng-change="change()" name="custNumber">
+							<br>
+						</div>
+						<div class="text-between">
+							Email:
+							<br>
+							<input type="text" ng-model="custEmail" ng-change="change()" name="custEmail">
+							<br>
+						</div>
+
+					</div>
+					<br>
+
+			</div>
+
+			<div class="flex-container-two">
+
+				<div class="col">
+					<h2>Address:</h2>
+					<div class="text-between">
+						Street Line 1:
+						<br>
+						<input type="text" ng-model="custStreetOne" ng-change="change()" name="custStreetOne">
+						<br>
+					</div>
+					<div class="text-between">
+						Street Line 2:
+						<br>
+						<input type="text" ng-model="custStreetTwo" ng-change="change()" name="custStreetTwo">
+						<br>
+					</div>
+					<div class="text-between">
+						City:
+						<br>
+						<input type="text" ng-model="custCity" ng-change="change()" name="custCity">
+						<br>
+					</div>
+					<div class="text-between">
+						State:
+						<br>
+						<input type="text" ng-model="custState" ng-change="change()" name="custState">
+						<br>
+					</div>
+					<div class="text-between">
+						Zip:
+						<br>
+						<input type="number" ng-model="custZip" ng-change="change()" name="custZip">
+						<br>
+					</div>
+					<div class="text-between">
+						Country:
+						<br>
+						<input type="text" ng-model="custCountry" ng-change="change()" name="custCountry">
+						<br>
+						<br>
+					</div>
+
+				</div>
+				<br>
+
+			</div>
+
+			<div class="flex-container-two">
+				<div class="col">
+					<h2>Notes:</h2>
+					<div class="text-between">
+						Date:
+						<br>
+						<input type="date" ng-model="date" ng-change="change()" name="noteDate">
+						<br>
+					</div>
+					<div class="text-between">
+						Notes:
+						<br>
+						<textarea id="advanced" name="note" ng-model="note" ng-change="change()" rows="10" cols="50" maxlength="2000" wrap="hard"></textarea>
+						<br>
+					</div>
+					<input type="submit" value="submit" onclick="return validateForm()">
+				</div>
+			</div>
+			</form>
+
+
+
+
+		</div>
+		<div class="flexer2">
+			<div class="space-left space-top">
+				<button class="btnC">See All Customers</button>
+				<div class="customer-list">
+
+				</div>
+			
+			</div>
+
+
+		
+		<div class="search">
+			<form action="/api/searchCust" method="POST" name="searchCustOne">
+				
+				<div id="myDropdown" class="dropdown-content">
+					<input type="text" placeholder="Search Customers.." id="myInput" onkeyup="filterFunction()">
+					<ul id="drop-down"></ul>
+				  </div>
+				<input type="submit" value="submit"/>
+			</form>
+		</div>
+	</div>
+		<div class="flex-container">
+			<br> {{custName}}
+			<br> {{custNumber}}
+			<br> {{custEmail}}
+			<br> {{custStreetOne}}
+			<br> {{custStreetTwo}}
+			<br>{{custCity}}
+			<br> {{custState}}
+			<br> {{custZip}}
+			<br> {{custCountry}}
+
+
+			<br>
+			<br> {{note}}
+		</div>
+	</div>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div id="myModal" class="modal">
+		
+		  <!-- Modal content -->
+		  <div class="modal-content">
+			<span class="close">&times;</span>
+				<div class="modal-adjust-form"></div>
+		  </div>
+		
+		</div>
+
+</body>
+
+
+
+
+<script>
+
+var allCusts 
+
+window.onload = function(){ 
+    $.get("/api/custData", function(data){
+        allCusts = data
+    })
+}
+
+
+function filterFunction() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+		filter = input.value.toUpperCase();
+        //div = document.getElementById("myDropdown");
+		//a = div.getElementsByTagName("a");
+		myList = document.getElementById('drop-down');
+		
+		//delete options off of search bar//
+		while(myList.firstChild) myList.removeChild(myList.firstChild);
+		
+		var currentList = document.getElementsByClassName('cust-list-search')
+		if(filter > ''){
+        for (i = 0; i < allCusts.length; i++) {
+			 var val = allCusts[i].cust_name.toUpperCase().indexOf(filter);
+			 var listElement = document.createElement('ul');
+			 listElement.id = 'cust-list-item';
+			 listElement.className='btn-list'
+			 listElement.innerHTML=allCusts[i].cust_name;
+			 myList.appendChild(listElement);
+			 if(val>-1){
+				listElement.style.display = ""
+			 }
+			 else{
+				 listElement.style.display = "none"
+				 myList.removeChild(listElement);
+			 }
+		}
+		}
+	}
+	
+
+
+
+function updateCustomer() {
+	var nameA = document.forms["custAdjust"]["adjustName"].value;
+	var emailA = document.forms["custAdjust"]["adjustEmail"].value;
+	var numberA = document.forms["custAdjust"]["adjustNumber"].value;
+	if (nameA == "") {
+		alert("Customer's name must be filled out");
+		return false;
+	}
+	if (numberA == "") {
+		alert("Customer's phone number must be filled out");
+		return false;
+	}
+	if (emailA == "") {
+		alert("Customer's email must be filled out");
+		return false;
+	}
+
+	
+}
+	function validateForm() {
+		var name = document.forms["userOne"]["custName"].value;
+		var email = document.forms["userOne"]["custEmail"].value;
+		var streetOne = document.forms["userOne"]["custStreetOne"].value;
+		var streetTwo = document.forms["userOne"]["custStreetOne"].value;
+		var city = document.forms["userOne"]["custCity"].value;
+		var state = document.forms["userOne"]["custState"].value;
+		var country = document.forms["userOne"]["custCountry"].value;
+		var zip = document.forms["userOne"]["custZip"].value;
+
+		if (streetOne == '' || streetTwo == '' || city == '' || state == '' || country == '' || zip == '') {
+			alert("The address was not complete but still saved")
+		}
+
+		if (name == "") {
+			alert("Customer's name must be filled out");
+			return false;
+		}
+		if (email == "") {
+			alert("Customer's email must be filled out");
+			return false;
+		}
+		if (number == "") {
+			alert("Customer's phone number must be filled out");
+			return false;
+		}
+		if (number.length < 10 || number.length > 10) {
+			alert("Not a vaild Phone Number")
+			return false;
+		}
+	}
+
+	var app = angular.module('myApp', []);
+	app.controller('myCtrl', function ($scope, $window) {
+		$scope.change = function () {
+			const values = {
+				expenseNameOne: $scope.firstEx,
+				expenseNameTwo: $scope.secondEx,
+				expenseNameThree: $scope.thirdEx,
+				expenseNameFour: $scope.fourthEx,
+				expenseNameFive: $scope.fifthEx
+			}
+			const names = {
+				name1: $scope.name1,
+				name2: $scope.name2,
+				name3: $scope.name3,
+				name4: $scope.name4,
+				name5: $scope.name5
+			}
+			var grossIncome = calcIncome($scope.income1, $scope.income2, $scope.income3)
+			var totExpenses = calcExpenses($scope.firstEx, $scope.secondEx, $scope.thirdEx, $scope.fourthEx, $scope.fifthEx)
+			$scope.NetIncome = grossIncome - totExpenses
+			createTheShit(values, names)
+			CreateTheDonut(grossIncome, totExpenses)
+		}
+	})
+
+
+	//window.onload = function () {
+	//	createTheShit(values, names)
+	//}
+
+	var calcIncome = function (income1, income2, income3) {
+		if (income1 == null) income1 = 0
+		if (income2 == null) income2 = 0
+		if (income3 == null) income3 = 0
+		return income1 + income2 + income3
+	}
+
+	var calcExpenses = function (ex1, ex2, ex3, ex4, ex5) {
+		if (ex1 == null) ex1 = 0
+		if (ex2 == null) ex2 = 0
+		if (ex3 == null) ex3 = 0
+		if (ex4 == null) ex4 = 0
+		if (ex5 == null) ex5 = 0
+		return ex1 + ex2 + ex3 + ex4 + ex5
+
+	}
+	var createTheShit = function (values, names) {
+		if (!one) { var one = 1 }
+		if (!two) { var two = 1 }
+		if (!three) { var three = 1 }
+		if (!four) { var four = 1 }
+		if (!five) { var five = 1 }
+		// Load the Visualization API and the corechart package.
+		google.charts.load('current', { 'packages': ['corechart'] });
+
+		// Set a callback to run when the Google Visualization API is loaded.
+		google.charts.setOnLoadCallback(drawChart);
+
+		// Callback that creates and populates a data table,
+		// instantiates the pie chart, passes in the data and
+		// draws it.
+		function drawChart() {
+
+			// Create the data table.
+			var data = new google.visualization.DataTable();
+			data.addColumn('string', 'Topping');
+			data.addColumn('number', 'Amt In Dollars');
+			data.addRows([
+				[names.name1, values.expenseNameOne],
+				[names.name2, values.expenseNameTwo],
+				[names.name3, values.expenseNameThree],
+				[names.name4, values.expenseNameFour],
+				[names.name5, values.expenseNameFive]
+			]);
+
+			// Set chart options
+			var options = {
+				'title': 'MY EXPENSES',
+				'width': 800,
+				'height': 500
+			};
+
+			// Instantiate and draw our chart, passing in some options.
+			//var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
+			//chart.draw(data, options);
+		}
+	}
+
+
+
+
+	var CreateTheDonut = function (income, expenses) {
+		if (income == null) income = 0
+		if (expenses == null) expenses = 0
+		const incomeVar = income
+		const expensesVar = expenses
+		const net = income - expenses
+		google.charts.load("current", { packages: ["corechart"] });
+		google.charts.setOnLoadCallback(drawChart);
+		function drawChart() {
+			var data = google.visualization.arrayToDataTable([
+				['Type of Amount', 'Amount'],
+				['Expenses', expensesVar],
+				['Gross Income', incomeVar],
+				['Net Income', net]
+			]);
+
+			var options = {
+				title: 'Income vs Expenses',
+				pieHole: 0.4,
+			};
+
+			//var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+			//chart.draw(data, options);
+		}
+	}
+
+
+</script>
+
+</html>

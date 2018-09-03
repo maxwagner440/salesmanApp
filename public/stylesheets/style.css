@@ -1,0 +1,286 @@
+.background{
+  background-color: rgb(0, 0, 0)
+}
+
+.background-pic{
+  background-color: rgb(243, 243, 243)
+}
+.flexer{
+  display:flex;
+  background-color: #b5ccb6;
+  
+}
+
+.flexer2{
+  display:none;
+}
+.container{
+  display:flex;
+}
+.flex-container-one {
+  padding-left: 100px;
+  
+  display: flex;
+  justify-content: top;
+  flex-direction: column;
+  background-color: #b5ccb6;
+}
+
+.flex-container-two {
+  padding-left: 100px;
+  
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  background-color: #b5ccb6;
+}
+
+.flex-container{
+  justify-content: center;
+  
+  display:flex;
+  color:white;
+}
+.header2{
+  display:flex;
+  justify-content: center;
+  color: white;
+  background-color: black;
+}
+.imageOne{
+  display: flex;
+  height: 80%;
+  width: 50%;
+  justify-content: center;
+  padding-bottom: 7%;
+  padding-top: 5%;
+}
+
+test{
+      opacity:0;
+      transition: opacity 1s;
+      -webkit-transition: opacity 1s; /* Safari */
+}
+.text{
+  flex: 50%;
+  padding: 20px;
+}
+
+.text-between{
+  flex: 50%;
+  padding: 5px;
+}
+
+
+
+/*NAV BAR*/
+
+/* Add a black background color to the top navigation */
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
+/* Style the links inside the navigation bar */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+/* Change the color of links on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add an active class to highlight the current page */
+.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+/* Hide the link that should open and close the topnav on small screens */
+.topnav .icon {
+  display: none;
+}
+
+/* When the screen is less than 600 pixels wide, hide all links, except for the first one ("Home"). Show the link that contains should open and close the topnav (.icon) */
+@media screen and (max-width: 600px) {
+  .topnav a:not(:first-child) {display: none;}
+  .topnav a.icon {
+    float: right;
+    display: block;
+  }
+}
+
+/* The "responsive" class is added to the topnav with JavaScript when the user clicks on the icon. This class makes the topnav look good on small screens (display the links vertically instead of horizontally) */
+@media screen and (max-width: 600px) {
+  .topnav.responsive {position: relative;}
+  .topnav.responsive a.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .topnav.responsive a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+}
+
+.space-left{
+  margin-left:5%;
+}
+
+.space-top{
+  margin-top:5%;
+}
+
+.button-segment{
+  display:flex;
+  justify-content: center;
+  
+}
+#btn-outer-one{
+  padding-right:2%;
+}
+
+#btn-outer-two{
+  padding-left:2%;
+}
+
+#btn-main-one{
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: rgb(154, 212, 156);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#btn-main-one:hover {background-color: #3e8e41}
+
+#btn-main-one:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#btn-main-two{
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: rgb(154, 212, 156);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+#btn-main-two:hover {background-color: #3e8e41}
+
+#btn-main-two:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+#flex-btn{
+  padding-bottom:1%;
+}
+
+
+
+.customer-list{
+  color:white;
+}
+.js-cust-list{
+  padding:5%;
+  align-content:center;
+  margin: 5%; 
+}
+.js-cust-list:hover {
+  background-color: #b5ccb6;
+  cursor: pointer;
+}
+
+#cust-list-item{
+  color:white;
+}
+
+#cust-list-item:hover {
+  background-color: #b5ccb6;
+  cursor: pointer;
+}
+
+
+
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#modal-cust-name:hover{
+  font-size:20px;
+  background-color: #b5ccb6;
+  
+  cursor: pointer;
+}
+#modal-cust-number:hover{
+  font-size:20px;
+  background-color: #b5ccb6;
+  cursor: pointer;
+}
+#modal-cust-email:hover{
+  font-size:20px;
+  background-color: #b5ccb6;
+  cursor: pointer;
+}
