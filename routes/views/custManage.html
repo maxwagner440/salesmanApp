@@ -22,17 +22,18 @@
 
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-	<div class="topnav" id="myTopnav">
-		<a href="/" class="active">Home</a>
-		<a href="/custManage">Customer Management</a>
+	<div class="topnav" id="myTopnav" style="padding-left:5%;">
+		<a href="/">Home</a>
+		<a href="/custManage" class="active">Customer Management</a>
 		<a href="#contact">Contact</a>
 		<a href="#about">About</a>
 		<a href="javascript:void(0);" class="icon" onclick="myFunction()">
 			<i class="fa fa-bars"></i>
 		</a>
+
 	</div>
 
-
+<div class="background">
 	<div class="container">
 		<div class="jumbotron">
 			<h1>Customer Management</h1>
@@ -43,7 +44,6 @@
 
 
 	<div ng-app="myApp" ng-controller="myCtrl" class="background">
-		<h2 class="header2">Customer Managment Center</h2>
 		<div id="flex-btn">
 		<div class="button-segment">
 			<div id="btn-outer-one">
@@ -157,9 +157,20 @@
 
 
 		</div>
+		
+		<div class="search">
+				<form action="/api/searchCust" method="POST" name="searchCustOne">
+					
+					<div id="myDropdown" class="dropdown-content">
+						<input type="text" placeholder="Search Customers.." id="myInput" onkeyup="filterFunction()">
+						<ul id="drop-down"></ul>
+					  </div>
+				</form>
+			</div>
+
 		<div class="flexer2">
 			<div class="space-left space-top">
-				<button class="btnC">See All Customers</button>
+				<!--<button class="btnC">See All Customers</button>-->
 				<div class="customer-list">
 
 				</div>
@@ -168,17 +179,9 @@
 
 
 		
-		<div class="search">
-			<form action="/api/searchCust" method="POST" name="searchCustOne">
-				
-				<div id="myDropdown" class="dropdown-content">
-					<input type="text" placeholder="Search Customers.." id="myInput" onkeyup="filterFunction()">
-					<ul id="drop-down"></ul>
-				  </div>
-				<input type="submit" value="submit"/>
-			</form>
-		</div>
+		
 	</div>
+
 		<div class="flex-container">
 			<br> {{custName}}
 			<br> {{custNumber}}
@@ -194,6 +197,8 @@
 			<br>
 			<br> {{note}}
 		</div>
+	</div>
+	
 	</div>
 
 

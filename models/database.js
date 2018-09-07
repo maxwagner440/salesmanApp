@@ -81,8 +81,8 @@ function query(sql, params, cb) {
 function saveCustInfo(input) {
 
   if (input.custName != '' && input.custEmail != '' && input.custNumber != '') {
-    var addrInsert = "INSERT INTO address (street_line_one, street_line_two, city, state, zip, country) VALUES($1, $2, $3, $4, $5, $6)"
-    var addrInsertArr = [input.streetOne, input.streetTwo, input.city, input.state, input.zip, input.country]
+    var addrInsert = "INSERT INTO address (street_line_one, street_line_two, city, state, zip, country, create_date) VALUES($1, $2, $3, $4, $5, $6, $7)"
+    var addrInsertArr = [input.streetOne, input.streetTwo, input.city, input.state, input.zip, input.country, "NOW()"]
 
     var saveAddress = pool.query(addrInsert, addrInsertArr
     ).then(function (res, err) {
@@ -94,8 +94,8 @@ function saveCustInfo(input) {
 
     saveAddress.then(function (data) {
       var addrkey = data.rows[0].addrkey
-      var custInsert = "INSERT INTO customers (cust_name, cust_phone, cust_email, custAddrKey) VALUES($1, $2, $3, $4)"
-      var custInsertArr = [input.name, input.number, input.email, addrkey]
+      var custInsert = "INSERT INTO customers (cust_name, cust_phone, cust_email, custAddrKey, create_date) VALUES($1, $2, $3, $4, $5)"
+      var custInsertArr = [input.name, input.number, input.email, addrkey, "NOW()"]
       return pool.query(custInsert, custInsertArr)
     })
   }

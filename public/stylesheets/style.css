@@ -1,6 +1,5 @@
 .background{
-  background-color: rgb(0, 0, 0)
-}
+  background-color:rgb(47, 144, 160)}
 
 .background-pic{
   background-color: rgb(243, 243, 243)
@@ -16,6 +15,7 @@
 }
 .container{
   display:flex;
+  justify-content: center;
 }
 .flex-container-one {
   padding-left: 100px;
@@ -77,7 +77,7 @@ test{
 
 /* Add a black background color to the top navigation */
 .topnav {
-  background-color: #333;
+  background-color: rgb(255, 255, 255);
   overflow: hidden;
 }
 
@@ -85,7 +85,7 @@ test{
 .topnav a {
   float: left;
   display: block;
-  color: #f2f2f2;
+  color: #080202;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -100,7 +100,7 @@ test{
 
 /* Add an active class to highlight the current page */
 .active {
-  background-color: #4CAF50;
+  background-color: rgba(138, 194, 202, 0.767);
   color: white;
 }
 
@@ -156,7 +156,7 @@ test{
 
 #btn-main-one{
   display: inline-block;
-  padding: 15px 25px;
+  padding: 7px 9px;
   font-size: 24px;
   cursor: pointer;
   text-align: center;
@@ -178,7 +178,7 @@ test{
 
 #btn-main-two{
   display: inline-block;
-  padding: 15px 25px;
+  padding: 7px 9px;
   font-size: 24px;
   cursor: pointer;
   text-align: center;
@@ -199,10 +199,15 @@ test{
 }
 
 #flex-btn{
-  padding-bottom:1%;
+  padding-top: 1%;
+  padding-bottom: 1.5%;
 }
 
-
+.search{
+  display:flex;
+  float:right;
+  padding-right:5%;
+}
 
 .customer-list{
   color:white;
@@ -226,7 +231,9 @@ test{
   cursor: pointer;
 }
 
-
+#drop-down{
+  background-color: rgba(255, 255, 255, 0.76)
+}
 
 
 

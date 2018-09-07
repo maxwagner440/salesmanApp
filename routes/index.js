@@ -57,7 +57,8 @@ router.post('/custManageUser', function (req, res) {
     country : req.body.custCountry
     }
     db.saveCustInfo(input)
-})
+    res.sendFile(path.join(__dirname + '/views/custManage.html'));
+  })
 
 
 

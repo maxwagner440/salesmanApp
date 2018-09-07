@@ -65,13 +65,21 @@ var rs =''
         modal.style.display = "none";
     })
 
-
+    window.onload = function(){ 
+        //alert("test");
+        $.get("/api/custData", function(data){
+            makeUL(data);
+        })
+    }
+    
+    /*
     $(".btnC").click(function () {
         //alert("buttonC")
         $.get("/api/custData", function (data) {
             makeUL(data);
         });
     });
+    */
 
    
 
@@ -99,6 +107,8 @@ var rs =''
         na.setAttribute('value', name)
 
         var nu = document.createElement("input"); //input element, text
+
+
         nu.setAttribute('type',"tel");
         nu.setAttribute('name',"adjustNumber");
         nu.setAttribute('value',number);
