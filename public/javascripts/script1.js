@@ -1,15 +1,18 @@
 $(document).ready(function () {
 var rs =''
+$(".search").hide();
 
     $("#btn-main-one").click(function () {
         $(".flexer").show();
-        $(".flexer3").hide()
+        $(".flexer3").hide();
+        $(".search").hide();
         $('.flexer2').css({ 'display': 'none' })
     });
 
     $("#btn-main-two").click(function () {
         $(".flexer").hide();
         $(".flexer2").show();
+        $(".search").show();
         $('.flexer2').css({ 'display': 'flex' })
         $(".flexer3").hide();
 
@@ -17,6 +20,7 @@ var rs =''
 
     $(".btnCustAlter").click(function () {
         $(".flexer").hide();
+        $(".search").hide();
         $(".flexer2").hide();
         $(".flexer3").show();
 
@@ -25,30 +29,16 @@ var rs =''
 
     $(document).on('click', '.btn-list', function (data) {
         var custName = $(this).text();
-
-        $.get('/api/getInvidualCust', { parm1: custName },
-            function (returnedData) {
-                var customerName = returnedData[0].cust_name;
-                var customerNumber = returnedData[0].cust_phone;
-                var customerEmail = returnedData[0].cust_email;
-                rs = returnedData[0].rs;
-                var custItem = document.createElement('div');
-                custItem.classList.add('customer-modal-info')
-                custItem.innerHTML = '<div class="modal-cust-name">' + customerName + '</div>' +
-                    '<div class="modal-cust-number">' + customerNumber + '</div>' + '<div class="modal-cust-email">' + customerEmail + '</div>'
-                    + '<div><button id="edit-cust">Edit Customer</button></div>';
-                document.getElementsByClassName('modal-content')[0].appendChild(custItem);
-
-
-            });
-
-        var modal = document.getElementById('myModal');
-        // Get the button that opens the modal
-        var btn = document.getElementById("myBtn");
-        modal.style.display = "block";
-        if (event.target == modal) {
-            modal.style.display = "none";
+        var currCust = $('.js-cust-list').text();
+        document.getElementById('myInput').value = custName
+        if(currCust){
+            $('.js-cust-list').empty()   
+            console.log(currCust)
         }
+        
+        $.get("/api/getInvidualCust", {parm1:custName}, function(data){
+            makeUL(data);
+        })
 
     });
 
@@ -64,13 +54,13 @@ var rs =''
         $('.customer-modal-info').empty()
         modal.style.display = "none";
     })
-
+/* 
     window.onload = function(){ 
         //alert("test");
         $.get("/api/custData", function(data){
-            makeUL(data);
+            makeUL(data); 
         })
-    }
+    } */
     
     /*
     $(".btnC").click(function () {
@@ -80,6 +70,31 @@ var rs =''
         });
     });
     */
+
+    $(document).on('click', '.js-cust-list', function(data){
+        var custName = $(this).text();
+        $.get('/api/getInvidualCust', { parm1: custName },
+        function (returnedData) {
+            var customerName = returnedData[0].cust_name;
+            var customerNumber = returnedData[0].cust_phone;
+            var customerEmail = returnedData[0].cust_email;
+            rs = returnedData[0].rs;
+            var custItem = document.createElement('div');
+            custItem.classList.add('customer-modal-info')
+            custItem.innerHTML = '<div class="modal-cust-name">' + customerName + '</div>' +
+                '<div class="modal-cust-number">' + customerNumber + '</div>' + '<div class="modal-cust-email">' + customerEmail + '</div>'
+                + '<div><button id="edit-cust">Edit Customer</button></div>';
+            document.getElementsByClassName('modal-content')[0].appendChild(custItem);
+        });
+
+        var modal = document.getElementById('myModal');
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+        modal.style.display = "block";
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    })
 
    
 
@@ -142,11 +157,9 @@ var rs =''
 
 
     function makeUL(data) {
-        if ($(".cuList").length) {
-            $(".customer-list").slideToggle();
+         
+            //currCust.parentNode.removeChild(currCust);
 
-        }
-        else {
             var listContainer = document.createElement('div');
             listContainer.classList.add("cuList");
             // Add it to the page
@@ -175,7 +188,7 @@ var rs =''
                 var listItem = document.createElement('div');
                 //var div = document.createElement('div');
 
-                listItem.classList.add('btn-list')
+                listItem.classList.add('btn-cust-list')
 
                 // Add the item text
                 listItem.innerHTML = '<div class="js-cust-list">' + data[i].cust_name + '</div>';
@@ -186,7 +199,7 @@ var rs =''
             }
         }
 
-    }
+    
 
 
    
