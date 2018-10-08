@@ -28,17 +28,19 @@ $(".search").hide();
 
 
     $(document).on('click', '.btn-list', function (data) {
+        //set values of search bar
         var custName = $(this).text();
-        var currCust = $('.js-cust-list').text();
         document.getElementById('myInput').value = custName
-        if(currCust){
-            $('.js-cust-list').empty()   
-            console.log(currCust)
+
+        //delete search bar
+        var currentHTML = document.getElementById('drop-down')
+        var fc = currentHTML.firstChild;
+        while(fc){
+            currentHTML.removeChild( fc );
+            fc = currentHTML.firstChild;
         }
+        $('#drop-down').empty()
         
-        $.get("/api/getInvidualCust", {parm1:custName}, function(data){
-            makeUL(data);
-        })
 
     });
 

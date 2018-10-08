@@ -158,12 +158,13 @@
 
 		</div>
 		<div class="search">
-				<form action="/api/searchCust" method="POST" name="searchCustOne">
 					<div id="myDropdown" class="dropdown-content">
 						<input type="text" placeholder="Search Customers.." id="myInput" autocomplete="off" onkeyup="filterFunction()">
+											
 						<ul id="drop-down"></ul>
+						<input type="submit" value="submit" onclick="return chooseCustomer()">	
 					  </div>
-				</form>
+			
 			</div>
 		
 		
@@ -183,7 +184,9 @@
 	</div>
 	
 
-		<div class="flex-container">
+		<div class="flex-container" id="cont">
+
+
 			<br> {{custName}}
 			<br> {{custNumber}}
 			<br> {{custEmail}}
@@ -197,6 +200,7 @@
 
 			<br>
 			<br> {{note}}
+			</div>
 		</div>
 	</div>
 	
@@ -232,6 +236,45 @@ window.onload = function(){
     $.get("/api/custData", function(data){
         allCusts = data
     })
+}
+
+function chooseCustomer(){
+	var custItem = document.getElementById("myInput").value;
+	
+	if(document.getElementById('cust-display')){
+		document.getElementById('cust-display').remove()
+	}
+		
+	$.get("api/searchCust", { parm1: custItem },
+        function (data) {
+			var myDiv = document.getElementById('cont');
+
+			//create the customer in HTML
+			var listElement = document.createElement('div');
+			 listElement.id = 'cust-display';
+			 listElement.className='diver'
+			 var divBeg = '<div>'
+			 var divEnd = '</div>'
+			 listElement.innerHTML = '<div class="display-name">' + data[0].cust_name + divEnd 
+			+ '<div class="display-contact">'   //Phone, email 
+			+ '<strong>Phone: </strong>' + data[0].cust_phone 
+			+ divEnd
+			+ '<div class="display-contact">'
+			+ '<strong>Email: </strong>' + data[0].cust_email 
+			+ divEnd
+			+ '<br><div class="display-address">'
+			+ '<strong>Address: </strong>'
+			+ divEnd
+
+			+ '<div class="display-address">'
+			+ data[0].street_line_one + ' ' + data[0].street_line_two
+			+ divEnd
+			+ '<div class="display-address">'
+			+ data[0].city + ', ' + data[0].state + ' ' + data[0].zip + ' ' + data[0].country; 
+
+
+			 myDiv.appendChild(listElement);
+		})
 }
 
 

@@ -76,6 +76,8 @@ router.post('/custManageUser', function (req, res) {
 
 
 
+
+
   //API//
 
 
@@ -113,9 +115,9 @@ router.post("/api/adjustCust", function(req,res){
 
 router.get("/api/searchCust", function(req,res){
   name = req.query.parm1
-  db.searchAllCustomers(name).then(
+   db.searchAllCustomers(name).then(
     function(data){
-      console.log(data)
+      res.send(data)
     }
   )
 })

@@ -232,6 +232,7 @@ test{
 }
 
 #drop-down{
+  width:100%;
   background-color: rgba(255, 255, 255, 0.76)
 }
 
@@ -290,4 +291,21 @@ test{
   font-size:20px;
   background-color: #b5ccb6;
   cursor: pointer;
+}
+
+#myInput{
+  width:100%;
+}
+
+
+.display-name{
+  font-size: 40px;
+}
+
+.display-contact{
+  font-size: 20px;
+}
+
+.display-address{
+  font-size: 20px;
 }
