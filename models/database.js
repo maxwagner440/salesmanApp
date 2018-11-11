@@ -113,15 +113,17 @@ function getAllCustomers(){
   }) 
 }
 
-function searchAllCustomers(name, email){
+function searchAllCustomers(name, filter){
+  var fil
+  if(filter == "name") fil = 'c.cust_name'
+  if(filter == "email") fil = 'c.cust_email'
   var allCustSelect = " SELECT cust_name, cust_phone, cust_email, rs, a.street_line_one, "
-  + "a.street_line_two, a.city, a.state, a.zip, a.country FROM customers c LEFT OUTER JOIN address a ON a.addrKey = c.custAddrKey "
-  + "WHERE UPPER(c.cust_name) LIKE UPPER( $1 ) OR UPPER(c.cust_email) LIKE UPPER( $1 ) ";
+  + "a.street_line_two, a.city, a.state, a.zip, a.country " 
+  + "FROM customers c "
+  + " LEFT OUTER JOIN address a ON a.addrKey = c.custAddrKey "
+  + "WHERE UPPER(" + fil + ") LIKE UPPER( $1 ) ";
   name = "%" + name + "%";
-  email = "%" + email + "%";
   var parms = [name];
-  console.log(parms)
-  console.log(allCustSelect)
   return pool.query(allCustSelect, parms)
   .then(function (res, err) {
     return res.rows
@@ -146,6 +148,33 @@ function AdjustCustomerPost(name, number, email, rs){
     
 }
 
+
+function retreiveTopCustomers(){
+  var query = "SELECT cust_name, cust_phone, cust_email, rs, a.street_line_one, "
+  + "a.street_line_two, a.city, a.state, a.zip, a.country " 
+  + "FROM customers c "
+  + "LEFT OUTER JOIN address a ON a.addrKey = c.custAddrKey "
+  + "ORDER BY cust_name "
+  + "LIMIT 20 "
+  return pool.query(query)
+}
+
+
+function retreiveAlphCustomers(fromLetter, toLetter){
+  var promise = new Promise((resolve,reject)=>{
+    var query = "SELECT cust_name, cust_phone, cust_email, c.rs , a.street_line_one, "
+    + "a.street_line_two, a.city, a.state, a.zip, a.country " 
+    + "FROM customers c "
+    + "LEFT OUTER JOIN address a ON a.addrKey = c.custAddrKey "
+    + "WHERE cust_name >= '" + fromLetter + "' AND cust_name < '"+toLetter+"' "
+    + "ORDER BY cust_name "
+    resolve(pool.query(query))
+  })
+  return promise
+  
+}
+
+
 module.exports = {
   query: (text, params, callback) => {
     return pool.query(text, params, callback)
@@ -157,6 +186,8 @@ module.exports.AdjustCustomerPost= AdjustCustomerPost
 module.exports.getAllCustomers = getAllCustomers
 module.exports.saveCustInfo = saveCustInfo
 module.exports.searchAllCustomers = searchAllCustomers
+module.exports.retreiveTopCustomers = retreiveTopCustomers
+module.exports.retreiveAlphCustomers = retreiveAlphCustomers
 
 
 

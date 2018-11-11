@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+	<meta charset="UTF-8">
+	<title>Customer Management Page</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+	<script type="text/javascript" src="/javascripts/script1.js"></script>
+	<script type="text/javascript" src="/javascripts/navigate.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/json2csv@4.2.1"></script>
+	
+
+
+</head>
+
+<body>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<div class="topnav" id="myTopnav" style="padding-left:5%;">
+		<a href="/">Home</a>
+		<a href="/custManage" >Customer Management</a>
+		<a href="/navigate" class="active">Navigation</a>
+		<a href="#about">About</a>
+		<a href="javascript:void(0);" class="icon" onclick="myFunction()">
+			<i class="fa fa-bars"></i>
+		</a>
+
+	</div>
+
+<div ng-app="myNav" ng-controller="Ctrl" class="background">	
+			
+	<div class="background">
+		<div class="filter">
+			<form>
+				<input type="text" placeholder="Search Customers.." id="CustInput" ng-model="inp" autocomplete="off" ng-Keyup ="filterFunction()">
+				<br>Filter By: <br>
+				<input type="radio" name ="radio" ng-value="'email'" ng-model="radioFilter"> Email <br>
+				<input type="radio" name ="radio" ng-value="'name'" ng-model="radioFilter"> Name
+			</form>
+		</div> <!-- end of filter -->
+
+		<div class="customer-list">
+			<button ng-click="loadAThruI()">Customers A-I</button>
+			<button ng-click="loadJThruR()">Customers J-R</button>
+			<button ng-click="loadSThruZ()">Customers S-Z</button>
+			<button ng-click="testCSV()">Produce CSV</button>
+			<div data-ng-init="loadTopCustomers()"></div>
+			<table>
+					<tr>
+					   <th>Name</th>
+					   <th>Address LIne 1</th>
+					</tr>
+					
+					<tr ng-repeat = "cust in custs" id="{{cust.cust_name}}">
+					   <td>{{ cust.cust_name }}</td>
+					   <td>{{ cust.street_line_one }}</td>
+					   <td><button value="{{cust.cust_name}}" ng-click="addCustomerToNavigation(cust.rs)">Add to navigation</button></td>
+					</tr>
+			</table>
+		</div>	<!--end of customer list-->
+	</div> <!-- end of background-->
+
+
+		
+
+
+
+
+</body>
+</html>
+<script>
+
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
+
+	var myModule = angular.module('myNav', []);
+ 
+	myModule.value('stuff', { hello: 'foobar' });
+	
+	myModule.controller('Ctrl', function($scope, stuff) {
+		$scope.custs = ''
+		$scope.filterFunction = function(){
+			$.get("api/searchCust", { parm1: $scope.inp, parm2: $scope.radioFilter},
+        		function (data) {
+					console.log(data) //search for customers with filter on name vs email
+			})
+		}
+
+		/* $scope.loadTopCustomers = function(){
+			$.get("api/loadTopCust", 
+				function(custs){
+					//$scope.custs = custs.rows
+				})
+		} */
+
+		$scope.loadAThruI = function(){
+			$.get("api/loadAlphCust", {parm1: 'a', parm2: 'j'},
+				function(custs){
+					return $scope.custs = custs.rows
+				})
+		}
+
+		$scope.loadJThruR = function(){
+			$.get("api/loadAlphCust", {parm1: 'j', parm2: 's'},
+				function(custs){
+					return $scope.custs = custs.rows
+				}) 
+		}
+
+		$scope.loadSThruZ = function(){
+			$.get("api/loadAlphCust", {parm1: 's', parm2: 'Z'},
+				function(custs){
+					return $scope.custs = custs.rows
+				})
+		}
+
+		$scope.addCustomerToNavigation = function(rs){
+			if($scope.myRSArray){
+				var exist = 0
+				for(var i = 0; i < $scope.myRSArray.length; i++){
+					if($scope.myRSArray[i] === rs){
+						exist = 1
+						alert('Customer is already included in navigation')
+					}
+				}
+				if(exist == 0){
+					$scope.myRSArray.push(rs);
+					alert('Customer added to navigation')
+				}
+			}
+			else{
+				$scope.myRSArray = []
+				$scope.myRSArray.push(rs)
+				alert('Customer added to navigation')
+			}
+		}
+
+		$scope.testCSV = function(){
+			//todo:get addresses AND latitudes/longitudes
+			if($scope.myRSArray){
+				download("custNav.csv",$scope.myRSArray);
+			}
+			else{
+				alert('no customers added to list')
+			}
+		}
+
+	});
+
+
+</script>	

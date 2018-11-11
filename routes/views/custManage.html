@@ -14,6 +14,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
 	<script type="text/javascript" src="/javascripts/script1.js"></script>
+	<script type="text/javascript" src="/javascripts/navigate.js"></script>
 
 
 </head>
@@ -25,7 +26,7 @@
 	<div class="topnav" id="myTopnav" style="padding-left:5%;">
 		<a href="/">Home</a>
 		<a href="/custManage" class="active">Customer Management</a>
-		<a href="#contact">Contact</a>
+		<a href="/navigate">Navigation</a>
 		<a href="#about">About</a>
 		<a href="javascript:void(0);" class="icon" onclick="myFunction()">
 			<i class="fa fa-bars"></i>
@@ -159,10 +160,10 @@
 		</div>
 		<div class="search">
 					<div id="myDropdown" class="dropdown-content">
-						<input type="text" placeholder="Search Customers.." id="myInput" autocomplete="off" onkeyup="filterFunction()">
+						<input type="text" placeholder="Search Customers.." id="myInput" ng-model="inp" autocomplete="off" ng-Keyup ="filterFunction()">
 											
 						<ul id="drop-down"></ul>
-						<input type="submit" value="submit" onclick="return chooseCustomer()">	
+						<input type="button" value="submit" ng-click="chooseCustomer()">	
 					  </div>
 			
 			</div>
@@ -171,11 +172,9 @@
 
 		<div class="flexer2">
 			<div class="space-left space-top">
+				
 				<!--<button class="btnC">See All Customers</button>-->
-				<div class="customer-list">
-
-				</div>
-			
+				
 			</div>
 			
 
@@ -186,21 +185,46 @@
 
 		<div class="flex-container" id="cont">
 
-
 			<br> {{custName}}
 			<br> {{custNumber}}
 			<br> {{custEmail}}
 			<br> {{custStreetOne}}
 			<br> {{custStreetTwo}}
-			<br>{{custCity}}
+			<br> {{custCity}}
 			<br> {{custState}}
 			<br> {{custZip}}
 			<br> {{custCountry}}
 
+			<div class="customer-list" ng-show="isValue">
+					<div class="display-name">   {{lookUpName}}</div>	
+					<div class="display-contact">Email:	{{lookUpEmail}}</div>	
+					<div class="display-contact">Phone: {{lookUpNumber}}</div>	
+					<br>
+					<div class="display-address"><strong>Address:</strong></div>
+					<div class="display-address">{{addrONe}}</div>
+					<div class="display-address">	{{addrTwo}}</div>
+					<div class="display-address">	{{lookUpCity}} {{lookUpState}}, {{lookUpZip}}</div>
+					<div class="display-address">	{{lookUpCountry}}</div>
+							
+				</div>
+			<div ng-show="isValue">
+				<button id="select-for-map" ng-click="createMapList()">Add {{lookUpName}} To The List</button><br><br>
+				<button id="select-for-map">Edit {{lookUpName}}'s Profile</button>
+				
+			</div>
 
 			<br>
 			<br> {{note}}
 			</div>
+
+			<div ng-repeat="item in itemsArray" class="flex-containter">
+				<div>{{item}}
+					<button ng-show="isCustomerArray" ng-click="deleteFromArray()">Delete Customer from Navigation List</button>
+				</div>
+		</div>
+		<button ng-show="isCustomerArray">Navigate</button>
+
+	
 		</div>
 	</div>
 	
@@ -230,6 +254,9 @@
 
 <script>
 
+
+
+
 var allCusts 
 
 window.onload = function(){ 
@@ -238,6 +265,126 @@ window.onload = function(){
     })
 }
 
+	window.tester = [];
+	var mainApp = angular.module('myApp', []);
+	mainApp.controller('myCtrl', function ($scope, $window, $rootScope) {
+		$rootScope.test = 'testermax'
+		$scope.mapList = [];
+		$scope.itemsArray = []
+
+		$scope.createMapList = function(){
+			var custTemp = {
+				name:$scope.lookUpName,
+				addr1 : $scope.addrOne,
+				addr2 : $scope.addrTwo,
+				city : $scope.lookUpCity,
+				state : $scope.lookUpState,
+				zip : $scope.lookUpZip,
+				country : $scope.lookUpCountry
+			}
+
+		
+		$scope.isCustomerArray = true;
+
+		//todo:create filter function for duplicates and what it should return (probably the current array)
+		filterForDupes(custTemp, $scope.mapList)
+		.then((mapList)=>{
+			return $scope.mapList
+		})
+		$scope.mapList.push(custTemp)
+
+		$scope.itemsArray.push(custTemp.name)
+		alert('This customer has been added to the Navigation List')
+		//checkDuplicationInArray($window.mapList)
+		//console.log($window.mapList)
+		window.tester = mapList
+		console.log(window.tester)
+		}
+		
+		$scope.goNavigate = function(){
+			$.get("api/searchCust", { parm1: $scope.inp },
+        	function (data) {
+			})
+		}
+
+
+		$scope.chooseCustomer = function(){			
+			$scope.inp = document.getElementById("myInput").value;
+			
+			$.get("api/searchCust", { parm1: $scope.inp },
+        	function (data) {
+				$scope.isValue = true;
+				$scope.lookUpName = data[0].cust_name;
+				$scope.lookUpNumber = data[0].cust_phone;
+				$scope.lookUpEmail = data[0].cust_email;
+				$scope.addrOne = data[0].street_line_one
+				$scope.addrTwo = data[0].street_line_two
+				$scope.lookUpCity = data[0].city
+				$scope.lookUpState = data[0].state 
+				$scope.lookUpZip = data[0].zip 
+				$scope.lookUpCountry = data[0].country; 
+
+			})
+		}
+
+
+		$scope.filterFunction = function() {
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+		filter = input.value.toUpperCase();
+        //div = document.getElementById("myDropdown");
+		//a = div.getElementsByTagName("a");
+		myList = document.getElementById('drop-down');
+		
+		//delete options off of search bar//
+		while(myList.firstChild) myList.removeChild(myList.firstChild);
+		$.get("/api/custData", function(data){
+        	allCusts = data
+    	})
+		var currentList = document.getElementsByClassName('cust-list-search')
+		if(filter > ''){
+		
+        for (i = 0; i < allCusts.length; i++) {
+			 var val = allCusts[i].cust_name.toUpperCase().indexOf(filter);
+			 var listElement = document.createElement('ul');
+			 listElement.id = 'cust-list-item';
+			 listElement.className='btn-list'
+			 listElement.innerHTML=allCusts[i].cust_name;
+			 myList.appendChild(listElement);
+			 if(val>-1){
+				listElement.style.display = ""
+			 }
+			 else{
+				 listElement.style.display = "none"
+				 myList.removeChild(listElement);
+			 }
+		}
+		}
+	}
+
+	$scope.deleteFromArray = function(){
+		alert('test')
+	}
+		
+	})
+
+
+function checkDuplicationInArray(myArray){
+	
+	for(var i; i < myArray.length ; i++){
+		console.log(myArray[i])
+		if(myArray[i].addr1 == myArray[i+1].addr1){
+			console.log('test2')
+			if(myArray[i].city == myArray[i+1].city && myArray[i].state == myArray[i+1].state){
+				console.log('test')
+				myArray.splice(i+1,1);
+			}
+		}
+	}
+	console.log(myArray)
+
+}
+/* 
 function chooseCustomer(){
 	var custItem = document.getElementById("myInput").value;
 	
@@ -275,42 +422,10 @@ function chooseCustomer(){
 
 			 myDiv.appendChild(listElement);
 		})
-}
+} */
 
 
-function filterFunction() {
-        var input, filter, ul, li, a, i;
-        input = document.getElementById("myInput");
-		filter = input.value.toUpperCase();
-        //div = document.getElementById("myDropdown");
-		//a = div.getElementsByTagName("a");
-		myList = document.getElementById('drop-down');
-		
-		//delete options off of search bar//
-		while(myList.firstChild) myList.removeChild(myList.firstChild);
-		$.get("/api/custData", function(data){
-        	allCusts = data
-    	})
-		var currentList = document.getElementsByClassName('cust-list-search')
-		if(filter > ''){
-		
-        for (i = 0; i < allCusts.length; i++) {
-			 var val = allCusts[i].cust_name.toUpperCase().indexOf(filter);
-			 var listElement = document.createElement('ul');
-			 listElement.id = 'cust-list-item';
-			 listElement.className='btn-list'
-			 listElement.innerHTML=allCusts[i].cust_name;
-			 myList.appendChild(listElement);
-			 if(val>-1){
-				listElement.style.display = ""
-			 }
-			 else{
-				 listElement.style.display = "none"
-				 myList.removeChild(listElement);
-			 }
-		}
-		}
-	}
+
 	
 
 
@@ -366,7 +481,9 @@ function updateCustomer() {
 		}
 	}
 
-	var app = angular.module('myApp', []);
+
+
+	/* var app = angular.module('myApp', []);
 	app.controller('myCtrl', function ($scope, $window) {
 		$scope.change = function () {
 			const values = {
@@ -390,7 +507,7 @@ function updateCustomer() {
 			CreateTheDonut(grossIncome, totExpenses)
 		}
 	})
-
+ */
 
 	//window.onload = function () {
 	//	createTheShit(values, names)

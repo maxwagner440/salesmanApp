@@ -5,6 +5,7 @@ const { Pool, Client } = require('pg')
 var path = require('path');
 const db = require('../models/database')
 
+
 const pool = new Pool({
   user: 'postgres',
   host: 'localhost',
@@ -42,6 +43,11 @@ router.post('/home', function (req, res) {
 
 router.get('/custManage', function (req, res, next) {
   res.sendFile(path.join(__dirname + '/views/custManage.html'));
+})
+
+router.get('/navigate', function(req, res, next){
+  
+  res.sendFile(path.join(__dirname + '/views/navigate.html'));  
 })
 
 router.post('/custManageUser', function (req, res) {
@@ -115,11 +121,31 @@ router.post("/api/adjustCust", function(req,res){
 
 router.get("/api/searchCust", function(req,res){
   name = req.query.parm1
-   db.searchAllCustomers(name).then(
+  filter = req.query.parm2
+   db.searchAllCustomers(name, filter).then(
     function(data){
       res.send(data)
     }
   )
 })
+
+router.get("/api/loadTopCust", function(req,res){
+  db.retreiveTopCustomers()
+  .then((data)=>{
+    res.send(data)
+  })
+})
+
+router.get("/api/loadAlphCust", function(req,res){
+  var fromLetter = req.query.parm1
+  var toLetter = req.query.parm2
+  db.retreiveAlphCustomers(fromLetter, toLetter)
+  .then((data)=>{
+    res.send(data)
+  })
+})
+
+
+
 
   module.exports = router;
